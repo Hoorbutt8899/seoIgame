@@ -725,3 +725,28 @@ header.scrolled .logo-img{height:42px}
 .cs-progress i{display:block;height:100%;width:0;background:var(--accent);border-radius:3px}
 @keyframes csFill{from{width:0}to{width:100%}}
 @media (prefers-reduced-motion:reduce){.cs-progress{display:none}}
+
+/* =====================================================================
+   HERO - MOBILE / TABLET LAYOUT
+   Heading on the left, the moving globe on the right (side by side).
+   PASTE THIS AT THE VERY END OF index.css
+   ===================================================================== */
+@media (max-width:900px){
+  .hero-grid{
+    grid-template-columns:minmax(0,1fr) clamp(130px,38vw,300px);
+    grid-template-areas:"badge badge" "title art" "sub sub" "ctas ctas" "chips chips";
+    column-gap:10px;row-gap:0;align-items:center;
+  }
+  .hero-grid>.inner{display:contents}
+  .hero-grid .badge{grid-area:badge;justify-self:start}
+  #hero h1{grid-area:title;font-size:clamp(30px,9.4vw,64px);margin:20px 0 0}
+  #hero .sub{grid-area:sub;margin-top:22px}
+  .hero-grid .hero-ctas{grid-area:ctas}
+  .hero-grid .chips{grid-area:chips}
+  .hero-art{grid-area:art;order:0;max-width:none;width:100%;margin:0;align-self:center}
+  .globe{width:100%}
+}
+@media (max-width:380px){
+  .hero-grid{grid-template-columns:minmax(0,1fr) 120px}
+  #hero h1{font-size:30px}
+}
