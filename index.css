@@ -883,3 +883,9 @@ header.scrolled .logo-img{height:42px}
   .rk-plan{font-size:16px;padding-left:20px}
   .rk-pc{padding:44px 22px 24px}
 }
+
+/* =====================================================================
+   WHATSAPP / TELEGRAM ICON SIZE (paste at the very end of index.css)
+   ===================================================================== */
+.btn.wa svg,.btn.tg svg,#heroWa svg,#heroTg svg{width:22px;height:22px}
+.btn.mini.wa svg,.btn.mini.tg svg{width:20px;height:20px}
