@@ -656,3 +656,96 @@ function paintRange(input) {      // fills the left side of a range slider
     }, { threshold: 0.35 }).observe(slider);
   } else { inView = true; start(); }
 })();
+
+/* =====================================================================
+   MONTHLY RANKING PLANS (buttons + 5 plan cards)
+   PASTE THIS AT THE VERY END OF index.js
+   (delete the earlier rankings.js / packages.js blocks if you pasted them)
+   Edit plans, prices and features in the list below.
+   Prices are exactly as you gave them and are the same for every period.
+   A feature starting with "*" is shown as a bold starred bonus.
+   ===================================================================== */
+(function initRankingPlans() {
+  var elP = $('rkPeriods'), elPl = $('rkPlans'), elGrid = $('rkGrid');
+  if (!elP || !elPl || !elGrid) return;
+
+  var PERIODS = [
+    { months: 1, label: '1 month' },
+    { months: 3, label: '3 months' },
+    { months: 6, label: '6 months' }
+  ];
+
+  var RK = [
+    { name: 'Basic', sub: 'Starter', tag: 'Perfect for starters', price: '$350', old: '', guarantee: 'Link Juice Guaranteed',
+      f: ['600+ High Authority Backlinks', 'Dofollow & Permanent Links', 'Link Juice Guaranteed', 'DA 50+ Sites Only', 'Spam Score Under 5%', 'White Hat SEO Backlinks', 'Contextual Backlinks'] },
+    { name: 'Standard', sub: 'Great Value', badge: 'Most popular', bcls: 'b-pop', tag: 'Great value for growth', price: '$750', old: '$1000', guarantee: 'Link Juice Guaranteed',
+      f: ['900+ High Authority Backlinks', 'Dofollow & Permanent Links', 'Link Juice Guaranteed', 'DA 50+ Sites', 'Spam Score Under 5%', 'High-Quality & White Hat SEO', 'Contextual Backlinks', '2 SEO Blogs (800 words each)', 'Complete On-Page Optimization',
+        'Niche-Relevant Link Placements', 'Anchor Text Ratio Planning', 'Natural Link Velocity (Drip-Feed)', 'Competitor Backlink Gap Analysis'] },
+    { name: 'Premium', sub: 'Brand Ranking', tag: 'Maximum power, maximum results', hot: true, badge: '\u2605 Best selling', bcls: 'b-gold', price: '$1500', old: '$1900', guarantee: '100% Refund Guarantee',
+      f: ['2200+ High Authority Backlinks', 'DA Increase Service (Up to 35+)', 'Dofollow & Permanent Links', 'Link Juice Guaranteed', 'DA 50+ Sites', 'Spam Score Under 5%', 'Premium Quality White Hat SEO', 'Contextual Backlinks', '5 SEO-Optimized Blogs (800 words each)', 'Advanced On-Page SEO Optimization',
+        'Guaranteed Ranking for Brand Keywords', '1st Page Ranking Results – Guaranteed!', '100% Refund Guarantee',
+        'Niche-Relevant Link Placements', 'Fast Link Indexing Support', 'Geo-Targeted & Multi-Language Links', 'Toxic Link Audit & Cleanup'] },
+    { name: 'Elite', sub: 'General Ranking', badge: 'For serious growth', bcls: 'b-silver', tag: 'Dominate your competition', price: '$4000', old: '$5000', guarantee: 'Link Juice Guaranteed',
+      f: ['5000+ High Authority Backlinks', 'General Keyword Ranking Improvement', 'Dofollow & Permanent Links', 'Link Juice Guaranteed', 'DA 50+ Sites Only', 'Spam Score Under 5%', 'Contextual & White Hat Backlinks', '8 SEO-Optimized Blogs (1000 words each)', 'Advanced On-Page SEO Optimization',
+        'Niche-Relevant Link Placements', 'Anchor Text Ratio Planning', 'Fast Link Indexing Support', 'Detailed Monthly Progress Reports'] },
+    { name: 'Enterprise', sub: 'Brand + General Rankings', badge: 'Enterprise', bcls: 'b-ent', tag: 'Total market domination', price: '$13,500', old: '$15,000', guarantee: '1st Page Ranking Results – Guaranteed',
+      f: ['15000+ High Authority Backlinks', 'General Keywords Ranking – Guaranteed', 'Brand Keywords Ranking – Guaranteed', 'DA Increase Service (Up to 45+)', 'Dofollow & Permanent Links', 'Link Juice Guaranteed', 'DA 50+ Sites Only', 'Spam Score Under 5%', '20 SEO-Optimized Blogs (1000 words each)', 'Full Technical & On-Page SEO Optimization', '1st Page Ranking Results – Guaranteed!',
+        'Niche-Relevant Link Placements', 'Geo-Targeted & Multi-Language Links', 'Authority Digital PR Placements', 'Toxic Link Audit & Cleanup', 'Dedicated Account Manager'] }
+  ];
+
+  var per = 0, sel = 1;   // start on "1 month" + Standard
+
+  function itemFor(i) {
+    var p = RK[i], m = PERIODS[per];
+    return {
+      cls: 'SEO', catLabel: 'Monthly Rankings', name: p.name + ' - ' + p.sub + ' (' + m.label + ')',
+      price: p.price, per: '', guarantee: p.guarantee, delivery: m.label + ' of rankings',
+      features: p.f.map(function (x) { return x.charAt(0) === '*' ? x.slice(1) : x; })
+    };
+  }
+
+  function renderButtons() {
+    elP.innerHTML = PERIODS.map(function (x, i) {
+      return '<button type="button" class="' + (i === per ? 'on' : '') + '" data-i="' + i + '" aria-pressed="' + (i === per) + '">' + x.label + '</button>';
+    }).join('');
+    elPl.innerHTML = RK.map(function (x, i) {
+      return '<button type="button" class="rk-plan' + (x.hot ? ' hot' : '') + (i === sel ? ' on' : '') + '" data-i="' + i + '" aria-pressed="' + (i === sel) + '">' +
+        (x.hot ? '<span class="rk-tagx">Best selling</span>' : '') + x.name + '<i>' + x.sub + '</i></button>';
+    }).join('');
+  }
+
+  function renderCards(animate) {
+    var m = PERIODS[per];
+    elGrid.innerHTML = RK.map(function (p, i) {
+      var price = p.price, old = p.old;
+      return '<article class="rk-pc' + (p.hot ? ' hot' : '') + (i === sel ? ' sel' : '') + '" data-i="' + i + '"' + (animate ? ' style="animation-delay:' + (i * 60) + 'ms"' : ' style="animation:none"') + '>' +
+        (p.badge ? '<span class="rk-badge ' + p.bcls + '">' + p.badge + '</span>' : '') +
+        '<h3>' + p.name + '</h3><p class="tag">' + p.tag + '</p>' +
+        '<ul class="rk-feats">' + p.f.map(function (x) {
+          return x.charAt(0) === '*' ? '<li class="bonus">' + x.slice(1) + '</li>' : '<li>' + x + '</li>';
+        }).join('') + '</ul>' +
+        '<div class="rk-foot"><div class="rk-price">' + (old ? '<s>' + old + '</s>' : '') + '<b>' + price + '</b></div>' +
+        '<button type="button" class="btn gold ord-now rk-order" data-plan="' + i + '" aria-label="Order the ' + p.name + ' plan">Order now</button></div>' +
+        '</article>';
+    }).join('');
+  }
+
+  elP.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    per = +b.getAttribute('data-i'); renderButtons(); renderCards(false);
+  });
+  elPl.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    sel = +b.getAttribute('data-i'); renderButtons();
+    $all('.rk-pc', elGrid).forEach(function (c) { c.classList.toggle('sel', +c.getAttribute('data-i') === sel); });
+    var card = elGrid.querySelector('.rk-pc[data-i="' + sel + '"]');
+    if (card && card.scrollIntoView) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  // register the order item at click time (it always matches the chosen period)
+  elGrid.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.rk-order') : null;
+    if (b) b.setAttribute('data-item', ITEMS.push(itemFor(+b.getAttribute('data-plan'))) - 1);
+  });
+
+  renderButtons(); renderCards(true);
+})();
