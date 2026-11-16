@@ -73,14 +73,16 @@
 <section id="hero">
   <div class="wrap hero-grid">
     <div class="inner">
-      <span class="badge"><i class="pulse-dot"></i>SEO iGame Agency</span>
+      <span class="badge"><i class="pulse-dot"></i>High-competition SEO agency</span>
       <h1>Rank.<br>Grow.<br><span class="grad">Dominate.</span></h1>
-      <p class="sub">Domain rating, domain authority and trust flow growth with <b>refill guarantees</b>, before-and-after proof and clear delivery times, plus a software house for the products behind your brand.</p>
-      <div class="hero-ctas">
-        <a class="btn gold" href="#packages">View packages<svg><use href="#i-arrow"/></svg></a>
-        <a class="btn ghost-d" id="heroWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp us</a>
-        <a class="btn ghost-d" id="heroTg" href="#" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg>Telegram</a>
-      </div>
+    <p class="sub">Some niches don&rsquo;t play by normal rules. Ads are banned, outreach gets ignored and rivals spend big. We build the authority that puts your brand on page one anyway, with <b>refill guarantees</b>, before-and-after proof and clear delivery times.</p>
+<div class="hero-ctas">
+  <a class="btn gold" href="#packages">View packages<svg><use href="#i-arrow"/></svg></a>
+  <a class="btn ghost-d" id="heroWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Chat with a strategist</a>
+  <a class="btn ghost-d" id="heroTg" href="#" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg>Message us on Telegram</a>
+</div>
+ 
+
       <div class="chips">
         <span class="chip">Registered in Dubai since 2019</span>
         <span class="chip">Verified agency</span>
@@ -442,40 +444,51 @@
     </div>
   </div>
 </section>
-<!-- ============================ PACKAGES ============================ -->
-<section id="packages" class="sec soft">
+<!-- =====================================================================
+     PACKAGES = MONTHLY RANKING PLANS  +  DR / DA / TF PACKAGES
+     In index.html DELETE your whole old <section id="packages"> ... </section>
+     (and the packages.html block from my last message, if you pasted it),
+     then paste BOTH sections below in the same place.
+     ===================================================================== -->
+
+<!-- =====================================================================
+     PACKAGES = MONTHLY RANKING PLANS (period + plan buttons + 5 plan cards)
+     In index.html DELETE your whole old <section id="packages"> ... </section>
+     AND the DR / DA / TF section (<section id="authority-packages"> ... </section>)
+     if you pasted it, then paste this ONE block in the same place.
+     Keep the hidden placeholders near the bottom of it.
+     ===================================================================== -->
+<!-- ============ MONTHLY RANKING PLANS (dark) ============ -->
+<section id="packages" class="sec dark rk-sec">
   <div class="wrap">
     <div class="sec-head center reveal">
-      <div class="kick">Authority pricing</div>
-      <h2>Choose your <span class="grad">package</span></h2>
-      <p>Pick a guarantee period, pick a metric, then order any plan. Prices shown are sample values, replace them in index.js.</p>
+      <div class="rk-pill">Monthly rankings</div>
+      <h2>Choose your <span class="grad">ranking plan</span></h2>
+      <p>Pick a ranking period, pick a keyword type, then order any plan. Fresh rankings for high-competition niches every month.</p>
     </div>
 
-    <div class="tabs" id="gTabs" role="tablist" aria-label="Guarantee period">
-      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="m3" type="button">3-Month Guarantee</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="m6" type="button">6-Month Guarantee</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="y1" type="button">1-Year Guarantee</button>
-    </div>
-    <div class="metric-pills" id="mPills" role="tablist" aria-label="Metric">
-      <button class="mpill active" role="tab" aria-selected="true" data-metric="DR" type="button">DR <span class="mb">Ahrefs</span></button>
-      <button class="mpill" role="tab" aria-selected="false" data-metric="DA" type="button">DA <span class="mb">Moz</span></button>
-      <button class="mpill" role="tab" aria-selected="false" data-metric="TF" type="button">TF <span class="mb">Majestic</span></button>
-    </div>
-    <p class="metric-info" id="metricInfo"></p>
+    <div class="rk-note reveal">Our plans and strategy evolve with every Google update, because delivering stable, consistent results is our responsibility.</div>
 
-    <div class="plan-grid" id="planGrid" aria-live="polite"></div>
+    <ul class="rk-trust reveal" aria-label="Why clients trust us">
+      <li>9+ Years of SEO Experience</li>
+      <li>1100+ Live Case Studies</li>
+      <li>100% White Hat</li>
+      <li>Thousands of Ranking Keywords</li>
+      <li>On-Time Reports</li>
+    </ul>
 
-    <div class="mini-grid">
-      <div class="mini"><div class="ic"><svg><use href="#i-shield"/></svg></div><h4>Refill guarantee</h4><p>Dropped links are refilled during your guarantee period.</p></div>
-      <div class="mini"><div class="ic"><svg><use href="#i-check"/></svg></div><h4>Proof included</h4><p>Before and after screenshots with every completed order.</p></div>
-      <div class="mini"><div class="ic"><svg><use href="#i-link"/></svg></div><h4>Clean links only</h4><p>Relevant, spam-checked placements, never link farms.</p></div>
-      <div class="mini"><div class="ic"><svg><use href="#i-wa"/></svg></div><h4>Direct support</h4><p>Message us on WhatsApp or Telegram any time.</p></div>
-    </div>
+    <div class="rk-label">Ranking period</div>
+    <div class="rk-seg" id="rkPeriods" role="group" aria-label="Ranking period"></div>
+
+    <div class="rk-label">Plan</div>
+    <div class="rk-plans" id="rkPlans" role="group" aria-label="Plan"></div>
+
+    <div class="rk-grid" id="rkGrid" aria-live="polite"></div>
+
+    <!-- hidden placeholders: the old script still looks for these ids, keep them -->
+    <div hidden><div id="gTabs"></div><div id="mPills"></div><p id="metricInfo"></p><div id="planGrid"></div></div>
   </div>
 </section>
-
-</main>
-
 <!-- =========================== ORDER FORM =========================== -->
 <section id="order-form" class="sec">
   <div class="wrap">
