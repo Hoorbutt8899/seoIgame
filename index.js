@@ -749,3 +749,32 @@ function paintRange(input) {      // fills the left side of a range slider
 
   renderButtons(); renderCards(true);
 })();
+
+/* =====================================================================
+   LICENCE CARD: copy button + "Ask for a licence copy" link
+   PASTE THIS AT THE VERY END OF index.js (it uses waUrl() and CONFIG)
+   ===================================================================== */
+(function initLicenceCard() {
+  var no = document.getElementById('licNo');
+  var copy = document.getElementById('licCopy');
+  var ask = document.getElementById('licAsk');
+  if (ask) ask.href = waUrl('Hello ' + CONFIG.BRAND + ',\n\nCould you please share a copy of your professional licence?\n\nMy name:\nMy website URL:');
+  if (!no || !copy) return;
+  var label = copy.querySelector('span'), timer = null;
+  function done(ok) {
+    label.textContent = ok ? 'Copied!' : 'Press Ctrl+C';
+    clearTimeout(timer);
+    timer = setTimeout(function () { label.textContent = 'Copy number'; }, 1800);
+  }
+  copy.addEventListener('click', function () {
+    var text = no.textContent.trim();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+    } else {
+      var r = document.createRange(); r.selectNodeContents(no);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      done(ok);
+    }
+  });
+})();
