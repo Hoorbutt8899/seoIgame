@@ -778,3 +778,14 @@ function paintRange(input) {      // fills the left side of a range slider
     }
   });
 })();
+
+/* =====================================================================
+   LIVE DEMO BUTTONS (WhatsApp + Telegram, pre-filled message)
+   PASTE THIS AT THE VERY END OF index.js (uses waUrl(), tgUrl() and CONFIG)
+   ===================================================================== */
+(function initLiveDemo() {
+  var msg = 'Hello ' + CONFIG.BRAND + ',\n\nI would like to see your real Search Console stats live on Google Meet.\n\nMy name:\nMy website URL:\nA time that suits me:';
+  var wa = document.getElementById('liveWa'), tg = document.getElementById('liveTg');
+  if (wa) wa.href = waUrl(msg);
+  if (tg) tg.href = tgUrl(msg);
+})();
