@@ -436,6 +436,7 @@ function paintRange(input) {      // fills the left side of a range slider
 (function initSimulator() {
   var state = { cur: 20, boost: 25, shown: 20 };
   var slider = $('drSlider');
+if (!slider) return;
 
   /* background grid lines of the chart */
   var gl = '';
