@@ -789,3 +789,87 @@ function paintRange(input) {      // fills the left side of a range slider
   if (wa) wa.href = waUrl(msg);
   if (tg) tg.href = tgUrl(msg);
 })();
+
+/* ===== GOOGLE UPDATES filter ===== */
+(function(){
+  var bar=document.getElementById('guFilter'); if(!bar) return;
+  bar.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    bar.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b)});
+    var f=b.dataset.f;
+    document.querySelectorAll('#guList .gu-item').forEach(function(it){it.hidden=(f!=='all'&&it.dataset.type!==f)});
+  });
+})();
+
+/* ===== PLAN FINDER ===== */
+(function(){
+  /* ---- EDIT HERE: number, names, descriptions ---- */
+  var WA=function(){return (typeof CONFIG!=='undefined'&&CONFIG.WHATSAPP)||'YOURNUMBER'};
+  var PLANS={
+    trial:{n:'Starter',d:'A small trial to check how authority building works on your site before you commit to more.'},
+    general:{n:'Elite',d:'Our plan for general keywords. Built to earn relevant authority and move you up the results.'},
+    brand:{n:'Premium',d:'Our top plan for brand keywords. Built to protect and strengthen your name where it matters most.'}
+  };
+  var ORDER=['trial','general','brand'];
+  var GOAL_T={trial:'Test us first',general:'General keywords',brand:'Brand keyword'};
+  var PAGES=[[1,'1','Page 1, below the top 3','Close. Needs a final push.'],[2,'2','Page 2','Just outside the spotlight.'],[3,'3','Page 3','Visible to Google, not to people.'],[4,'4','Page 4','Needs real authority to climb.'],[5,'5+','Page 5 or lower','A big climb is needed.'],[6,'?','I cannot find my site','Not ranking yet for this keyword.']];
+  var PAGE_W={1:'You are already on page 1, so the work focuses on a final push toward the top spots.',2:'You are just behind page 1, so a focused campaign can make the biggest difference.',3:'You are a few pages away. We build authority step by step to climb out of the middle.',4:'You need real authority to climb, so we plan the work in phases.',5:'This is a bigger climb. We plan it in phases and track progress at each stage.',6:'You are not showing yet. We also suggest checking that your pages are indexed.'};
+  var GOAL_W={general:'General keywords are competitive, so Elite focuses on relevant, trusted links that suit your topic.',brand:'Your brand keyword should be easy to own. Premium helps you defend it and strengthen your presence.',trial:'Starter is for testing. There is no pressure to continue, and you can upgrade after you see how it goes.'};
+  /* ------------------------------------------------ */
+  var $=function(i){return document.getElementById(i)};
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var goal='',page=0,step='s1',view='';
+  var CHECK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var PEN='<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></svg>';
+
+  $('pf-pages').innerHTML=PAGES.map(function(p){return '<button class="pf-opt" type="button" data-v="'+p[0]+'"><span class="pf-ic">'+p[1]+'</span><span><b>'+p[2]+'</b><span class="d">'+p[3]+'</span></span><svg class="ar" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>'}).join('');
+
+  function chips(){
+    var h='';
+    if(goal&&step!=='s1')h+='<button class="pf-chip" type="button" data-go="s1">'+GOAL_T[goal]+PEN+'</button>';
+    if(page&&step==='res')h+='<button class="pf-chip" type="button" data-go="s2">'+PAGES[page-1][2]+PEN+'</button>';
+    $('pf-sum').innerHTML=h;
+    document.querySelectorAll('#pf-sum .pf-chip').forEach(function(c){c.onclick=function(){go(c.dataset.go)}});
+  }
+  function go(id){
+    step=id;
+    ['s1','s2','res'].forEach(function(x){$('pf-'+x).hidden=x!==id});
+    var total=goal==='trial'?1:2,n=id==='s1'?1:id==='s2'?2:total;
+    $('pf-back').hidden=id==='s1';$('pf-rs').hidden=id==='s1';
+    var lab=id==='res'?'Your plan<small>Based on your answers</small>':'Step '+n+' of 2<small>'+(id==='s1'?'Your goal':'Your current rank')+'</small>';
+    $('pf-lab').innerHTML=lab;
+    var bars=document.querySelectorAll('#pf-prog i');
+    bars.forEach(function(b,i){b.classList.toggle('on',id==='res'||i<n)});
+    chips();
+    $('pf-card').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+    var f=$('pf-'+id).querySelector('.pf-q');if(f)f.focus({preventScroll:true});
+  }
+  function msg(key){
+    var p=PLANS[key],m='Hi SEOIGAME, I am interested in the '+p.n+' plan.\nGoal: '+GOAL_T[goal]+(page?'\nMy ranking: '+PAGES[page-1][2]:'');
+    if(key!==goal)m+='\n(Your finder recommended '+PLANS[goal].n+'.)';
+    return 'https://wa.me/'+WA()+'?text='+encodeURIComponent(m);
+  }
+  function paint(key){
+    view=key;var p=PLANS[key],rec=key===goal;
+    $('pf-name').textContent=p.n;$('pf-desc').textContent=p.d;
+    var t=$('pf-tag');t.textContent=rec?'Recommended for you':'Not your best match';t.className='pf-tag'+(rec?'':' off');
+    var why=rec?[page?PAGE_W[page]:null,GOAL_W[key],'You can switch to a different plan later as your needs change.']:['Our recommendation for your goal is '+PLANS[goal].n+'.','You are welcome to choose '+p.n+' if it suits you better. We confirm the fit before starting.'];
+    $('pf-why').innerHTML=why.filter(Boolean).map(function(w){return '<li>'+CHECK+'<span>'+w+'</span></li>'}).join('');
+    $('pf-cta-t').textContent='Get the '+p.n+' plan';
+    $('pf-wa').href=msg(key);
+    document.querySelectorAll('#pf-tabs .pf-tab').forEach(function(b){b.setAttribute('aria-selected',b.dataset.k===key?'true':'false')});
+  }
+  function result(){
+    $('pf-tabs').innerHTML=ORDER.map(function(k){return '<button class="pf-tab'+(k===goal?' rec':'')+'" type="button" role="tab" data-k="'+k+'" aria-selected="false">'+PLANS[k].n+'</button>'}).join('');
+    document.querySelectorAll('#pf-tabs .pf-tab').forEach(function(b){b.onclick=function(){paint(b.dataset.k)}});
+    paint(goal);go('res');
+  }
+  document.querySelectorAll('#pf-goals .pf-opt').forEach(function(b){b.onclick=function(){
+    var g=b.dataset.v;if(g!==goal)page=0;goal=g;
+    if(g==='trial'){page=0;result()}else go('s2')}});
+  document.querySelectorAll('#pf-pages .pf-opt').forEach(function(b){b.onclick=function(){page=+b.dataset.v;result()}});
+  $('pf-back').onclick=function(){go(step==='res'?(goal==='trial'?'s1':'s2'):'s1')};
+  $('pf-rs').onclick=function(){goal='';page=0;go('s1')};
+  var g=$('pf-guide');
+  ORDER.forEach(function(k){g.insertAdjacentHTML('beforeend','<div class="pf-row"><b>'+GOAL_T[k]+'</b><em>'+PLANS[k].n+'</em></div>')});
+})();
